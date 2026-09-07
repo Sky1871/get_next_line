@@ -6,58 +6,36 @@
 #    By: sky <sky@student.42.fr>                   #+#  +:+       +#+          #
 #                                                +#+#+#+#+#+   +#+             #
 #    Created: 2026/09/07 18:17:07 by sky              #+#    #+#               #
-#    Updated: 2026/09/07 18:17:32 by sky             ###   ########.fr         #
+#    Updated: 2026/09/07 18:28:19 by sky             ###   ########.fr         #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= get_next_line
+NAME		= get_next_line.a
+SRCS = get_next_line.c get_next_line_utils.c
+OBJS = ${SRCS:.c=.o}
+CC = cc
+AR = ar
+ARFLAGS = rcs
+CFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -MMD -MP
+RM = rm -f
 
-CC		= cc
-CFLAGS		= -Wall -Wextra -Werror
-CPPFLAGS	= -MMD -MP
-LDFLAGS		=
-LDLIBS		=
-DEBUG		?= 0
-RM		= rm -f
+all: ${NAME}
 
-# Optional libs: no configured optional library directory detected.
-LIBS		=
+%.o: %.c
+	${CC} ${CFLAGS} ${CPPFLAGS} -c $< -o $@
 
-JOBS		?= $(shell nproc)
-MAKEFLAGS	+= -j $(JOBS) -l $(JOBS)
-
-ifeq ($(DEBUG),1)
-CFLAGS		+= -g3
-CPPFLAGS	+= -DDEBUG=1
-endif
-
-SRC_DIR		= src
-OBJ_DIR		= obj
-SRCS		= $(SRC_DIR)/main.c
-
-OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-DEPS		= $(OBJS:.o=.d)
-
-all: $(NAME)
-
-$(NAME): $(OBJS) $(LIBS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) $(LDLIBS) -o $(NAME)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+${NAME}: ${OBJS}
+	${AR} ${ARFLAGS} $@ ${OBJS}
 
 clean:
-	$(RM) -r $(OBJ_DIR)
+	${RM} ${OBJS} ${OBJS:.o=.d}
 
 fclean: clean
-	$(RM) $(NAME)
+	${RM} ${NAME}
 
-re:
-	$(MAKE) fclean
-	$(MAKE) all
+re: fclean all
 
--include $(DEPS)
+-include ${OBJS:.o=.d}
 
 .PHONY: all clean fclean re
-.DEFAULT_GOAL := all
