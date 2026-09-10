@@ -6,7 +6,7 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/10 17:40:11 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/10 21:50:45 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	read_to_buf(int fd, char **buf)
 		else if (i == 0)
 			break ;
 		temp[i] = '\0';
-		*buf = ft_strjoin(*buf, temp);
+		*buf = ft_strjoin(*buf, temp, i);
 	}
 	free(temp);
 	return ;

@@ -6,7 +6,7 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/10 07:21:51 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/10 21:50:27 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,14 @@ int	ft_strlen(char *s)
 	return (len);
 }
 
-char	*ft_strjoin(char *buf, char *str)
+char	*ft_strjoin(char *buf, char *str, int len)
 {
 	int		i;
 	int		n;
 	char	*ret;
 
 	i = ft_strlen(buf);
-	n = ft_strlen(str);
-	ret = malloc(sizeof(char) * (i + n + 1));
+	ret = malloc(sizeof(char) * (i + len + 1));
 	if (!ret)
 	{
 		free(buf);
