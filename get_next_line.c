@@ -6,7 +6,7 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/10 07:53:15 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/10 17:40:11 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-char	*read_to_buf(int fd, char *buf)
+void	read_to_buf(int fd, char **buf)
 {
 	char	*temp;
 	int		i;
@@ -22,23 +22,24 @@ char	*read_to_buf(int fd, char *buf)
 	i = 0;
 	temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!temp)
-		return (NULL);
-	while (find_line(buf))
+		return ;
+	while (find_line(*buf))
 	{
 		i = read(fd, temp, BUFFER_SIZE);
 		if (i == -1)
 		{
 			free(temp);
-			free(buf);
-			return (NULL);
+			free(*buf);
+			*buf = NULL;
+			return ;
 		}
 		else if (i == 0)
 			break ;
 		temp[i] = '\0';
-		buf = ft_strjoin(buf, temp);
+		*buf = ft_strjoin(*buf, temp);
 	}
 	free(temp);
-	return (buf);
+	return ;
 }
 
 char	*get_next_line(int fd)
@@ -53,12 +54,13 @@ char	*get_next_line(int fd)
 			return (NULL);
 		buf[0] = '\0';
 	}
-	buf = read_to_buf(fd, buf);
+	read_to_buf(fd, &buf);
 	if (!buf)
 		return (NULL);
 	if (buf[0] == '\0')
 	{
 		free(buf);
+		buf = NULL;
 		return (NULL);
 	}
 	ret = return_line(buf);

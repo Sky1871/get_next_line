@@ -22,5 +22,6 @@ char	*ft_strjoin(char *buf, char *str);
 char	*delete_line(char *buf, int len);
 char	*return_line(char *buf);
 int		find_line(char *buf);
+char	*get_next_line(int fd);
 
 #endif
