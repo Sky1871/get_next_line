@@ -6,10 +6,11 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/10 03:39:54 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/10 03:59:59 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
 #include <stdlib.h>
 
 int	ft_strlen(char *s)
