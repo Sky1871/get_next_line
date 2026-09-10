@@ -6,7 +6,7 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/10 03:59:59 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/10 05:13:12 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*delete_line(char *buf, int len)
 	return (ret);
 }
 
-char	*find_line(char *buf)
+char	*return_line(char *buf)
 {
 	int		i;
 	int		n;
@@ -99,4 +99,20 @@ char	*find_line(char *buf)
 	}
 	ret[n] = '\0';
 	return (ret);
+}
+
+int	find_line(char *buf)
+{
+	int	i;
+
+	if (!buf)
+		return (1);
+	i = 0;
+	while (buf[i])
+	{
+		if (buf[i] == '\n')
+			return (0);
+		i++;
+	}
+	return (1);
 }

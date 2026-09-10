@@ -13,4 +13,10 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+int		ft_strlen(char *s);
+char	*ft_strjoin(char *buf, char *str);
+char	*delete_line(char *buf, int len);
+char	*return_line(char *buf);
+int		find_line(char *buf);
+
 #endif
