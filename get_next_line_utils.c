@@ -6,7 +6,7 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/10 05:13:12 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/10 07:21:51 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char	*ft_strjoin(char *buf, char *str)
 	ret = malloc(sizeof(char) * (i + n + 1));
 	if (!ret)
 	{
-		free(str);
 		free(buf);
 		return (NULL);
 	}
@@ -46,7 +45,6 @@ char	*ft_strjoin(char *buf, char *str)
 		ret[i++] = str[n];
 	ret[i] = '\0';
 	free(buf);
-	free(str);
 	return (ret);
 }
 
