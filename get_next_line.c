@@ -6,13 +6,29 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/11 02:18:47 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/11 02:58:09 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdlib.h>
 #include <unistd.h>
+
+int	find_line(buffer buf)
+{
+	int	i;
+
+	if (!buf.b_buf)
+		return (1);
+	i = 0;
+	while (buf.b_buf[i])
+	{
+		if (buf.b_buf[i] == '\n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 void	read_to_buf(int fd, buffer *buf)
 {

@@ -6,7 +6,7 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/11 02:22:37 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/11 02:56:38 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,19 @@ int	ft_strlen(char *s)
 	return (len);
 }
 
-char	*ft_strjoin(buffer *buf, char *str, int len)
+char	*ft_allocjoin(buffer *buf, char *str, int total)
 {
 	int		i;
 	int		n;
-	int		total;
 	char	*ret;
 
-	i = -1;
-	n = -1;
-	total = buf->b_len + len;
-	if (total < buf->b_cap)
-	{
-		while (str[++i])
-			buf->b_buf[buf->b_len++] = str[i];
-		buf->b_buf[buf->b_len] = '\0';
-		return (buf->b_buf);
-	}
 	ret = malloc(sizeof(char) * (total + buf->b_cap + 1));
 	if (!ret)
 	{
 		free(buf->b_buf);
 		return (NULL);
 	}
+	n = -1;
 	i = -1;
 	while (++i < buf->b_len)
 		ret[i] = buf->b_buf[i];
@@ -56,6 +46,24 @@ char	*ft_strjoin(buffer *buf, char *str, int len)
 	buf->b_cap += total;
 	free(buf->b_buf);
 	return (ret);
+
+}
+
+char	*ft_strjoin(buffer *buf, char *str, int len)
+{
+	int		i;
+	int		total;
+
+	i = -1;
+	total = buf->b_len + len;
+	if (total < buf->b_cap)
+	{
+		while (str[++i])
+			buf->b_buf[buf->b_len++] = str[i];
+		buf->b_buf[buf->b_len] = '\0';
+		return (buf->b_buf);
+	}
+	return (ft_allocjoin(&*buf, str, total));
 }
 
 char	*delete_line(buffer *buf, int len)
@@ -109,20 +117,4 @@ char	*return_line(buffer buf)
 	}
 	ret[n] = '\0';
 	return (ret);
-}
-
-int	find_line(buffer buf)
-{
-	int	i;
-
-	if (!buf.b_buf)
-		return (1);
-	i = 0;
-	while (buf.b_buf[i])
-	{
-		if (buf.b_buf[i] == '\n')
-			return (0);
-		i++;
-	}
-	return (1);
 }
