@@ -6,7 +6,7 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/10 21:50:27 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/11 02:22:37 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,58 +23,71 @@ int	ft_strlen(char *s)
 	return (len);
 }
 
-char	*ft_strjoin(char *buf, char *str, int len)
+char	*ft_strjoin(buffer *buf, char *str, int len)
 {
 	int		i;
 	int		n;
+	int		total;
 	char	*ret;
 
-	i = ft_strlen(buf);
-	ret = malloc(sizeof(char) * (i + len + 1));
+	i = -1;
+	n = -1;
+	total = buf->b_len + len;
+	if (total < buf->b_cap)
+	{
+		while (str[++i])
+			buf->b_buf[buf->b_len++] = str[i];
+		buf->b_buf[buf->b_len] = '\0';
+		return (buf->b_buf);
+	}
+	ret = malloc(sizeof(char) * (total + buf->b_cap + 1));
 	if (!ret)
 	{
-		free(buf);
+		free(buf->b_buf);
 		return (NULL);
 	}
 	i = -1;
-	n = -1;
-	while (buf[++i])
-		ret[i] = buf[i];
+	while (++i < buf->b_len)
+		ret[i] = buf->b_buf[i];
 	while (str[++n])
 		ret[i++] = str[n];
 	ret[i] = '\0';
-	free(buf);
+	buf->b_len = total;
+	buf->b_cap += total;
+	free(buf->b_buf);
 	return (ret);
 }
 
-char	*delete_line(char *buf, int len)
+char	*delete_line(buffer *buf, int len)
 {
 	int		i;
 	char	*ret;
 
-	if (!buf)
+	if (!buf->b_buf)
 		return (NULL);
-	i = ft_strlen(buf);
-	if (len >= i)
+	if (len >= buf->b_len)
 	{
-		free(buf);
+		free(buf->b_buf);
 		return (NULL);
 	}
-	ret = malloc(sizeof(char) * (i - len + 1));
+	buf->b_len -= len;
+	buf->b_cap -= len;
+	ret = malloc(sizeof(char) * (buf->b_len + buf->b_cap + 1));
 	if (!ret)
 	{
-		free(buf);
+		free(buf->b_buf);
+		buf->b_len = 0;
 		return (NULL);
 	}
 	i = 0;
-	while (buf[len])
-		ret[i++] = buf[len++];
+	while (buf->b_buf[len])
+		ret[i++] = buf->b_buf[len++];
 	ret[i] = '\0';
-	free(buf);
+	free(buf->b_buf);
 	return (ret);
 }
 
-char	*return_line(char *buf)
+char	*return_line(buffer buf)
 {
 	int		i;
 	int		n;
@@ -82,32 +95,32 @@ char	*return_line(char *buf)
 
 	i = 0;
 	n = 0;
-	while (buf[i] != '\n' && buf[i])
+	while (buf.b_buf[i] != '\n' && buf.b_buf[i])
 		i++;
-	if (buf[i] == '\n')
+	if (buf.b_buf[i] == '\n')
 		i++;
 	ret = malloc(sizeof(char) * (i + 1));
 	if (!ret)
 		return (NULL);
 	while (n != i)
 	{
-		ret[n] = buf[n];
+		ret[n] = buf.b_buf[n];
 		n++;
 	}
 	ret[n] = '\0';
 	return (ret);
 }
 
-int	find_line(char *buf)
+int	find_line(buffer buf)
 {
 	int	i;
 
-	if (!buf)
+	if (!buf.b_buf)
 		return (1);
 	i = 0;
-	while (buf[i])
+	while (buf.b_buf[i])
 	{
-		if (buf[i] == '\n')
+		if (buf.b_buf[i] == '\n')
 			return (0);
 		i++;
 	}

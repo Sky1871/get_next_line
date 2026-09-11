@@ -6,7 +6,7 @@
 /*   By: kseltenr <kseltenr@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 21:54:35 by kseltenr          #+#    #+#             */
-/*   Updated: 2026/09/10 21:50:45 by kseltenr        ###   ########.fr        */
+/*   Updated: 2026/09/11 02:18:47 by kseltenr        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	read_to_buf(int fd, char **buf)
+void	read_to_buf(int fd, buffer *buf)
 {
 	char	*temp;
 	int		i;
@@ -29,14 +29,14 @@ void	read_to_buf(int fd, char **buf)
 		if (i == -1)
 		{
 			free(temp);
-			free(*buf);
-			*buf = NULL;
+			free(buf->b_buf);
+			buf->b_buf = NULL;
 			return ;
 		}
 		else if (i == 0)
 			break ;
 		temp[i] = '\0';
-		*buf = ft_strjoin(*buf, temp, i);
+		buf->b_buf = ft_strjoin(&*buf, temp, i);
 	}
 	free(temp);
 	return ;
@@ -44,26 +44,28 @@ void	read_to_buf(int fd, char **buf)
 
 char	*get_next_line(int fd)
 {
-	static char	*buf;
-	char		*ret;
+	static buffer		buf;
+	char				*ret;
 
-	if (!buf)
+	if (!buf.b_buf)
 	{
-		buf = malloc(1);
-		if (!buf)
+		buf.b_cap = 256;
+		buf.b_len = 0;
+		buf.b_buf = malloc(buf.b_cap);
+		if (!buf.b_buf)
 			return (NULL);
-		buf[0] = '\0';
+		buf.b_buf[0] = '\0';
 	}
 	read_to_buf(fd, &buf);
-	if (!buf)
+	if (!buf.b_buf)
 		return (NULL);
-	if (buf[0] == '\0')
+	if (buf.b_buf[0] == '\0')
 	{
-		free(buf);
-		buf = NULL;
+		free(buf.b_buf);
+		buf.b_buf = NULL;
 		return (NULL);
 	}
 	ret = return_line(buf);
-	buf = delete_line(buf, ft_strlen(ret));
+	buf.b_buf = delete_line(&buf, ft_strlen(ret));
 	return (ret);
 }
